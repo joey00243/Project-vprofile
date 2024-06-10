@@ -9,8 +9,8 @@ pipeline {
 
     environment {
         NEXUS_VERSION = "nexus3"
-        NEXUS_USER = "admin"
-        NEXUS_PASS = "admin123"
+        //NEXUS_USER = "admin"
+        //NEXUS_PASS = "admin123"
         NEXUS_PROTOCOL = "http"
         NEXUSIP = "172.31.26.165"
         NEXUSPORT = "8081"
@@ -19,7 +19,7 @@ pipeline {
 	    NEXUS_GRP_REPO = "vprofile-maven-group"
         CENTRAL_REPO = "vprofile-maven-central"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
-        NEXUS_URL = "http://${NEXUSIP}:${NEXUSPORT}/repository/${NEXUS_GRP_REPO}/"
+        NEXUS_URL = "172.31.40.209:8081"
         ARTVERSION = "${env.BUILD_ID}"
         SONAR_ORG = "jomab-projects"
         SONAR_PROJECT_KEY = "jomab-an"
