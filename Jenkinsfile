@@ -73,7 +73,7 @@ pipeline {
             withSonarQubeEnv('sonar-sonar') {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomab-an \
                    -Dsonar.projectName=jomab-an \
-		   -Dsonar.organization=${SONAR_ORG} \
+		           -Dsonar.organization=${SONAR_ORG} \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
