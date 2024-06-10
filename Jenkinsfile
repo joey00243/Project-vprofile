@@ -66,11 +66,11 @@ pipeline {
         stage('CODE ANALYSIS with SONARQUBE') {
           
 		  environment {
-             scannerHome = tool 'sonarscanner4'
+             scannerHome = tool 'mysonarscanner4'
           }
 
           steps {
-            withSonarQubeEnv('sonar-pro') {
+            withSonarQubeEnv('sonar-sonar-id') {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomab-an \
                    -Dsonar.projectName=jomab-an \
                    -Dsonar.projectVersion=1.0 \
