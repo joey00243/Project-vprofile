@@ -16,7 +16,7 @@ pipeline {
         NEXUSPORT = "8081"
         SNAP_REPO = "vprofile-snapshot"
         NEXUS_REPOSITORY = "vprofile-release"
-	    NEXUS_GRP_REPO = "vprofile-maven-group"
+	NEXUS_GRP_REPO = "vprofile-maven-group"
         CENTRAL_REPO = "vprofile-maven-central"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         NEXUS_URL = "http://${NEXUSIP}:${NEXUSPORT}/repository/${NEXUS_GRP_REPO}/"
@@ -73,6 +73,7 @@ pipeline {
             withSonarQubeEnv('sonar-sonar') {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomab-an \
                    -Dsonar.projectName=jomab-an \
+		   -Dsonar.organization=${SONAR_ORG} \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
