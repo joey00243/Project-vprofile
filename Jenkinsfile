@@ -16,7 +16,7 @@ pipeline {
         NEXUSPORT = "8081"
         SNAP_REPO = "vprofile-snapshot"
         NEXUS_REPOSITORY = "vprofile-release"
-	NEXUS_GRP_REPO = "vprofile-maven-group"
+	    NEXUS_GRP_REPO = "vprofile-maven-group"
         CENTRAL_REPO = "vprofile-maven-central"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         NEXUS_URL = "http://${NEXUSIP}:${NEXUSPORT}/repository/${NEXUS_GRP_REPO}/"
@@ -102,7 +102,7 @@ pipeline {
                             nexusVersion: NEXUS_VERSION,
                             protocol: NEXUS_PROTOCOL,
                             nexusUrl: NEXUS_URL,
-                            groupId: NEXUS_REPOGRP_ID,
+                            groupId: NEXUS_GRP_REPO,
                             version: ARTVERSION,
                             repository: NEXUS_REPOSITORY,
                             credentialsId: NEXUS_CREDENTIAL_ID,
