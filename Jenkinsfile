@@ -70,7 +70,7 @@ pipeline {
           }
 
           steps {
-            withSonarQubeEnv('sonar-sonar-id') {
+            withSonarQubeEnv('sonar-sonar') {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomab-an \
                    -Dsonar.projectName=jomab-an \
                    -Dsonar.projectVersion=1.0 \
