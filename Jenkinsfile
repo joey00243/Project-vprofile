@@ -38,21 +38,21 @@ pipeline {
             }
         }
 
-	stage('UNIT TEST'){
+	    stage('UNIT TEST'){
             steps {
-                sh 'mvn -s settings.xml -DskipTests test'
+                sh 'mvn -s settings.xml test'
             }
         }
 
-	stage('INTEGRATION TEST'){
+	    stage('INTEGRATION TEST'){
             steps {
-                sh 'mvn -s settings.xml -DskipTests verify'
+                sh 'mvn -s settings.xml verify'
             }
         }
 		
         stage ('CODE ANALYSIS WITH CHECKSTYLE'){
             steps {
-                sh 'mvn -s settings.xml -DskipTests checkstyle:checkstyle'
+                sh 'mvn -s settings.xml checkstyle:checkstyle'
             }
             post {
                 success {
@@ -79,11 +79,17 @@ pipeline {
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
-
-            timeout(time: 10, unit: 'MINUTES') {
-               waitForQualityGate abortPipeline: true
-            }
           }
+        }
+
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
 
         stage("Publish to Nexus Repository Manager") {
@@ -120,6 +126,15 @@ pipeline {
                         error "*** File: ${artifactPath}, could not be found";
                     }
                 }
+            }
+        }
+
+        post {
+        always {
+            echo 'Slack Notifications.'
+            slackSend channel: '#jenkinscicd',
+                color: COLOR_MAP[currentBuild.currentResult],
+               message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
             }
         }
 
