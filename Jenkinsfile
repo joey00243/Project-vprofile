@@ -19,7 +19,7 @@ pipeline {
 	    NEXUS_GRP_REPO = "vprofile-maven-group"
         CENTRAL_REPO = "vprofile-maven-central"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
-        NEXUS_URL = "172.31.40.209:8081"
+        NEXUS_URL = "172.31.26.165:8081"
         ARTVERSION = "${env.BUILD_ID}"
         SONAR_ORG = "jomab-projects"
         SONAR_PROJECT_KEY = "jomab-an"
