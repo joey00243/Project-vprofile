@@ -30,7 +30,7 @@ pipeline {
         SONAR_TOKEN = "sonar-sonar-id"
         DOCKER_IMAGE = "your-dockerhub-repo/your-image-name"
         DOCKER_TAG = "${env.BUILD_ID}"
-        DOCKER_IMAGE = "joey00243/vprofileapplication:${DOCKER_TAG}"
+        DOCKER_IMAGE = "joey00243/vprofileapplication"
         DOCKERHUB_CREDENTIALS = "dockerhub"
     }
 	
@@ -142,7 +142,7 @@ pipeline {
         stage ('Build App Image') {
             steps {
                 script {
-                    dockerImage = docker.build $DOCKER_IMAGE
+                    dockerImage = docker.build DOCKER_IMAGE + ":V$DOCKER_TAG"
                 }
             }
         }
@@ -151,7 +151,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push($DOCKER_IMAGE)
+                        dockerImage.push("V$DOCKER_TAG")
                     }
                 }
             }
@@ -159,14 +159,14 @@ pipeline {
 
         stage('Remove Unused docker image'){
             steps{
-                sh "docker rmi $DOCKER_IMAGE"
+                sh "docker rmi $DOCKER_IMAGE:V$DOCKER_TAG"
             }
         }
 
         stage('Kubernetes Deploy') {
 	    agent { label 'KOPS' }
             steps {
-                    sh "sudo helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${DOCKER_IMAGE} --namespace prod"
+                    sh "sudo helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${DOCKER_IMAGE}:V${DOCKER_TAG} --namespace prod"
             }
         }
 
