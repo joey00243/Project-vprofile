@@ -28,6 +28,10 @@ pipeline {
         SONAR_ORG = "jomab-projects"
         SONAR_PROJECT_KEY = "jomab-an"
         SONAR_TOKEN = "sonar-sonar-id"
+        DOCKER_IMAGE = "your-dockerhub-repo/your-image-name"
+        DOCKER_TAG = "${env.BUILD_ID}"
+        DOCKER_IMAGE = "joey00243/vprofileapplication:${DOCKER_TAG}"
+        DOCKERHUB_CREDENTIALS = "dockerhub"
     }
 	
     stages{
@@ -103,7 +107,7 @@ pipeline {
                 script {
                     pom = readMavenPom file: "pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    //echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
                     artifactPath = filesByGlob[0].path;
                     artifactExists = fileExists artifactPath;
                     if(artifactExists) {
@@ -132,6 +136,43 @@ pipeline {
                         error "*** File: ${artifactPath}, could not be found";
                     }
                 }
+            }
+        }
+
+        stage ('Build App Image') {
+            steps {
+                script {
+                    dockerImage = docker.build $DOCKER_IMAGE
+                }
+            }
+        }
+
+        stage ('Upload Image') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                        dockerImage.push($DOCKER_IMAGE)
+                    }
+                }
+            }
+        }
+
+        stage('Remove Unused docker image'){
+            steps{
+                sh "docker rmi $DOCKER_IMAGE"
+            }
+        }
+
+        stage('Kubernetes Deploy') {
+	    agent { label 'KOPS' }
+            steps {
+                    sh "sudo helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${DOCKER_IMAGE} --namespace prod"
+            }
+        }
+
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
             }
         }
 
