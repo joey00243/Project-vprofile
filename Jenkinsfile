@@ -20,14 +20,14 @@ pipeline {
         NEXUSPORT = "8081"
         SNAP_REPO = "vprofile-snapshot"
         NEXUS_REPOSITORY = "vprofile-release"
-	    NEXUS_GRP_REPO = "vprofile-maven-group"
+	NEXUS_GRP_REPO = "vprofile-maven-group"
         CENTRAL_REPO = "vprofile-maven-central"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         NEXUS_URL = "172.31.26.165:8081"
         ARTVERSION = "${env.BUILD_ID}"
         SONAR_ORG = "jomab-projects"
         SONAR_PROJECT_KEY = "jomab-an"
-        SONAR_TOKEN = "sonar-sonar-id"
+        SONAR_TOKEN = "sonar-sonar"
         DOCKER_TAG = "${env.BUILD_ID}"
         DOCKER_IMAGE = "joey00243/vprofileapplication"
         DOCKERHUB_CREDENTIALS = "dockerhub"
@@ -80,7 +80,7 @@ pipeline {
             withSonarQubeEnv('sonar-sonar') {
                sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jomab-an \
                    -Dsonar.projectName=jomab-an \
-		           -Dsonar.organization=${SONAR_ORG} \
+		   -Dsonar.organization=${SONAR_ORG} \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
