@@ -27,7 +27,7 @@ pipeline {
         ARTVERSION = "${env.BUILD_ID}"
         SONAR_ORG = "jomab-projects"
         SONAR_PROJECT_KEY = "jomab-an"
-        SONAR_TOKEN = "sonar-sonar"
+        SONAR_TOKEN = "sonar-sonar-id"
         DOCKER_TAG = "${env.BUILD_ID}"
         DOCKER_IMAGE = "joey00243/vprofileapplication"
         DOCKERHUB_CREDENTIALS = "dockerhub"
