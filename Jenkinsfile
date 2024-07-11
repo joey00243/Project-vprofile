@@ -165,7 +165,7 @@ pipeline {
         stage('Kubernetes Deploy') {
 	    agent { label 'KOPS' }
             steps {
-                    sh "sudo helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${DOCKER_IMAGE}:V${DOCKER_TAG} --namespace prod"
+                    sh "sudo helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${DOCKER_IMAGE}:V${DOCKER_TAG} --namespace prod"
             }
         }
 
